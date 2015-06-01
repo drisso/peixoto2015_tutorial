@@ -1,9 +1,9 @@
 ---
-title: "How data analysis affects power, reproducibility and biological insight of RNA-seq studies in Neuroscience"
+title: "How data analysis affects power, reproducibility and biological insight of RNA-seq studies in complex datasets"
 author: Lucia Peixoto, Davide Risso, Shane G. Poplawski, Mathieu,  E. Wimmer, Terence P. Speed, Marcelo A. Wood and Ted Abel
 font_size: 12pt
 output: 
-      BiocStyle::pdf_document:
+      BiocStyle::html_document:
         toc: true
 graphics: yes
 bibliography: biblio.bib
