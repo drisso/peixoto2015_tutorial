@@ -100,7 +100,7 @@ plotPCA(uq, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.
 ### RUV normalization
 
 Analogously, we can use the *RUVs* function of *RUVSeq* to normalize the data with RUV. Note that *RUVs* uses replicate samples and negative control genes to normalize the data. We use the
-biological replicates and a list of negative control genes obtained from a recent microarray study. Here, we use *RUVs* on UQ-normalized data, see \cite{risso2014ruv} for additional details.
+biological replicates and a list of negative control genes obtained from a recent microarray study. Here, we use *RUVs* on UQ-normalized data, see [@risso2014ruv] for additional details.
 
 The information about the replicates is contained in the matrix *groups*, who has as many rows as the number of replicate groups and as many columns as the number of replicates in each group (see the *RUVSeq* package manual for additional details).
 
@@ -588,6 +588,82 @@ plot(ul[-(1:20),], ylim=c(0.15,0.55), col=colors[1], lwd=2, type="l", cex.axis=1
 lines(rl[-(1:20),], col=colors[2], lwd=2)
 legend("topright", legend=c("UQ vs. limma", "RUVs vs limma"), col=colors, lwd=2, cex=1)
 ```
+
+
+# Tuning parameters
+
+The two main tuning parameters of RUV are the number of factors of unwanted variation, *k*, and the set of negative controls genes. In this section, we provide guidelines on how to select these parameters and we show that RUVs is robust to the choice of negative controls.
+
+## Number of factors of unwanted variation (*k*)
+
+The choice of the parameter *k* is not easy and is dataset-dependent. Hence, we recommend to perform extensive exploratory data analysis, comparing different values of *k*.
+
+For this task, we found very useful to compare the RLE and PCA plots of the normalized data, as well as volcano plot and histogram of the *p*-values.
+
+In what follows, we show an example with the FC data, that highlights how a too low value, as well as a too high value, for *k* leads to sub-optimal results, compared to the chosen *k* = 5.
+
+### *k* = 1
+
+```{r ruv-k1}
+filter <- apply(fc, 1, function(x) length(x[which(x>10)])>5)
+filtered <- as.matrix(fc)[filter,]
+negCon <- intersect(negControls[,2], rownames(filtered))
+
+x <- as.factor(rep(c("CC", "FC", "RT"), each=5))
+names(x) <- colnames(fc)
+colLib <- colors[x]
+
+uq <- betweenLaneNormalization(filtered, which="upper")
+
+groups <- matrix(data=c(1:5, 6:10, 11:15), nrow=3, byrow=TRUE)
+
+s1 <- RUVs(uq, negCon, k=1, groups)
+
+plotRLE(s1$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+plotPCA(s1$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
+```
+
+With *k* = 1 the RLE plot shows residual unwanted variation for samples CC8, RT3 and RT8. More importantly, the samples fail to cluster by condition in the space of the first two PCs.
+
+### *k* = 5
+
+```{r ruv-k5}
+plotRLE(s$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+
+plotPCA(s$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
+```
+
+*k* = 5 is a good choice because the samples show similar RLE distributions and cluster by condition.
+
+### *k* = 10
+
+```{r ruv-k10}
+s10 <- RUVs(uq, negCon, k=10, groups)
+
+plotRLE(s10$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+
+plotPCA(s10$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
+```
+
+When the value of *k* is too high, the RLE distributions become uneven again. More importantly, the model over-corrects for unwanted variation and ends up removing (almost) all the biological variability within the conditions. This is shown in the PCA plot, where all the biological replicate samples are collapsed to almost the same coordinates.
+
+## Set of negative control genes
+
+The choice of the set of negative control genes is somewhat dependent on the dataset. When results on similar datasets are available (either because of previous experiments or through publicly available data), it is often a good choice to use a context-specific set of negative controls.
+
+In the absence of such a tailored set, alternative choices are a set of housekeeping genes, a set of synthetic controls (*spike-ins*), or a set of *in silico* empirical controls [@risso2014ruv].
+
+A good property of RUVs is its robustness to the choice of negative control genes. To highlight this robustness, we show the performance of RUVs when using all the genes as negative controls (*k* = 5).
+
+```{r ruvs-all}
+sAll <- RUVs(uq, rownames(uq), k=5, groups)
+
+plotRLE(sAll$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+
+plotPCA(sAll$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
+```
+
+The results are very close to those based on the set of negative controls (see above).
 
 # Session Info
 ```{r sessionInfo}
