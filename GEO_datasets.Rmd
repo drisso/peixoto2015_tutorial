@@ -228,3 +228,9 @@ s <- RUVs(round(filtered), 1:nrow(filtered), k=1, groups, round=FALSE)
 plotRLE(s$normalizedCounts, col=colLib, outline=FALSE, ylim=c(-1, 2), las=2)
 plotPCA(s$normalizedCounts, col=colLib)
 ```
+
+# Session Info
+
+```{r sessionInfo}
+sessionInfo()
+```
