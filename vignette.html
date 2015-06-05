@@ -170,7 +170,7 @@ plotRLE(uq, col = colLib, outline = FALSE, las = 3, ylim = c(-0.2, 0.2), ylab = 
 <div id="ruv-normalization" class="section level3">
 <h3>RUV normalization</h3>
 <p>Analogously, we can use the <em>RUVs</em> function of <em>RUVSeq</em> to normalize the data with RUV. Note that <em>RUVs</em> uses replicate samples and negative control genes to normalize the data. We use the biological replicates and a list of negative control genes obtained from a recent microarray study. Here, we use <em>RUVs</em> on UQ-normalized data, see <span class="citation">(Risso et al. 2014)</span> for additional details.</p>
-<p>The information about the replicates is contained in the matrix <em>groups</em>, who has as many rows as the number of replicate groups and as many columns as the number of replicates in each group (see the <em>RUVSeq</em> package manual for additional details).</p>
+<p>The information about the replicates is contained in the matrix <em>groups</em>, which has as many rows as the number of replicate groups and as many columns as the number of replicates in each group (see the <em>RUVSeq</em> package manual for additional details).</p>
 <pre class="r"><code>groups &lt;- matrix(data = c(1:5, 6:10, 11:15), nrow = 3, byrow = TRUE)
 groups</code></pre>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5]

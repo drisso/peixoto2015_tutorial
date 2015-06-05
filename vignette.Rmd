@@ -3,7 +3,7 @@ title: "How data analysis affects power, reproducibility and biological insight 
 author: Lucia Peixoto, Davide Risso, Shane G. Poplawski, Mathieu,  E. Wimmer, Terence P. Speed, Marcelo A. Wood and Ted Abel
 font_size: 12pt
 output: 
-      BiocStyle::html_document:
+      BiocStyle::pdf_document:
         toc: true
 graphics: yes
 bibliography: biblio.bib
@@ -102,7 +102,7 @@ plotPCA(uq, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.
 Analogously, we can use the *RUVs* function of *RUVSeq* to normalize the data with RUV. Note that *RUVs* uses replicate samples and negative control genes to normalize the data. We use the
 biological replicates and a list of negative control genes obtained from a recent microarray study. Here, we use *RUVs* on UQ-normalized data, see [@risso2014ruv] for additional details.
 
-The information about the replicates is contained in the matrix *groups*, who has as many rows as the number of replicate groups and as many columns as the number of replicates in each group (see the *RUVSeq* package manual for additional details).
+The information about the replicates is contained in the matrix *groups*, which has as many rows as the number of replicate groups and as many columns as the number of replicates in each group (see the *RUVSeq* package manual for additional details).
 
 ```{r replicateMatrix}
 groups <- matrix(data=c(1:5, 6:10, 11:15), nrow=3, byrow=TRUE)
