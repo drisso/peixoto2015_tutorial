@@ -3,7 +3,7 @@ title: "How data analysis affects power, reproducibility and biological insight 
 author: Lucia Peixoto, Davide Risso, Shane G. Poplawski, Mathieu,  E. Wimmer, Terence P. Speed, Marcelo A. Wood and Ted Abel
 font_size: 12pt
 output: 
-      BiocStyle::pdf_document:
+      BiocStyle::html_document:
         toc: true
 graphics: yes
 bibliography: biblio.bib
@@ -40,7 +40,7 @@ this tutorial. For the remainder of the document we assume that the reader has e
 The "raw" microarray data are available in GEO with the accession number GSE50423. See the GEO submission for details on the pre-processing.
 
 We mapped the Affymetrix probe IDs to ENSEMBL gene IDs. We retained only the genes with a one-to-one mapping. **Peixoto_FC_array_combined.txt** contains the combined dataset used for the
-ranking analysis of Figure 3.
+ranking analysis of Figure 5.
 
 ## Positive and negative controls
 
