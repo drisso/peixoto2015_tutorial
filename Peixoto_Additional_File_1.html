@@ -105,7 +105,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h3>RNA-seq data</h3>
 <p>The “raw” sequencing data are available in GEO with the accession number GSE63412 for the fear conditioning (FC) experiment and GSE44229 for the object location memory (OLM) experiment.</p>
 <p>Reads were mapped to the mouse genome (mm9) using GMAP/GSNAP <span class="citation">(Wu and Watanabe 2005)</span>. Only unique and concordant mapped reads were subsequently used for feature quantitation. Ensembl <span class="citation">(Flicek et al. 2014)</span> (release 65) gene counts were obtained using HTSeq <span class="citation">(Anders, Pyl, and Huber 2015)</span> (v. 0.6.1).</p>
-<p><strong>Peixoto_Additional_inputtext.zip</strong> is a ZIP archive that contains all the files needed to run this tutorial. For the remainder of the document we assume that the reader has extracted the archive into the working directory.</p>
+<p>In this document, we assume that the input data are in the <strong>Peixoto_Input_for_Additional_file_1</strong>.</p>
 <p><strong>Peixoto_CC_FC_RT.txt</strong> contains the FC read counts and <strong>Peixoto_OLM_HC.txt</strong> contains the OLM read counts used in the subsequent analyses.</p>
 </div>
 <div id="microarray-data" class="section level3">
@@ -132,11 +132,11 @@ library(RColorBrewer)</code></pre>
 <div id="fear-conditioning-fc-data" class="section level1">
 <h1>Fear Conditioning (FC) data</h1>
 <p>After reading the FC counts and the positive and negative control genes in R, we filter out the non expressed genes.</p>
-<pre class="r"><code>fc &lt;- read.table(&quot;Peixoto_Additional_inputtext/Peixoto_CC_FC_RT.txt&quot;, row.names = 1, 
+<pre class="r"><code>fc &lt;- read.table(&quot;Peixoto_Input_for_Additional_file_1/Peixoto_CC_FC_RT.txt&quot;, row.names = 1, 
     header = TRUE)
-negControls &lt;- read.table(&quot;Peixoto_Additional_inputtext/Peixoto_NegativeControls.txt&quot;, 
+negControls &lt;- read.table(&quot;Peixoto_Input_for_Additional_file_1/Peixoto_NegativeControls.txt&quot;, 
     sep = &quot;\t&quot;, header = TRUE, as.is = TRUE)
-positive &lt;- read.table(&quot;Peixoto_Additional_inputtext/Peixoto_positive_controls.txt&quot;, 
+positive &lt;- read.table(&quot;Peixoto_Input_for_Additional_file_1/Peixoto_positive_controls.txt&quot;, 
     as.is = TRUE, sep = &quot;\t&quot;, header = TRUE)
 
 x &lt;- as.factor(rep(c(&quot;CC&quot;, &quot;FC&quot;, &quot;RT&quot;), each = 5))
@@ -359,7 +359,7 @@ points(topRsRT[negCon, 1], -log10(topRsRT[negCon, &quot;PValue&quot;]), pch = 1,
 <div id="object-location-memory-olm-data" class="section level1">
 <h1>Object Location Memory (OLM) data</h1>
 <p>We next look at the OLM experiment. After reading the OLM counts into R, we filter out the non expressed genes.</p>
-<pre class="r"><code>olm &lt;- read.table(&quot;Peixoto_Additional_inputtext/Peixoto_OLM_HC.txt&quot;, row.names = 1, 
+<pre class="r"><code>olm &lt;- read.table(&quot;Peixoto_Input_for_Additional_file_1/Peixoto_OLM_HC.txt&quot;, row.names = 1, 
     header = TRUE)
 stopifnot(all(rownames(olm) == rownames(fc)))
 
@@ -622,7 +622,7 @@ points(topSCombined[negCon, 1], -log10(topSCombined[negCon, &quot;PValue&quot;])
 <h1>Comparison with microarray data</h1>
 <p>Finally, we look at the concordance between DE lists obtained from RNA-seq (either with UQ or RUV normalization) and microarray.</p>
 <p>We consider a subset of genes, including only the genes mapped uniquely by the Affymetrix probe-sets and detected by RNA-seq, and only the samples assessed with both technologies.</p>
-<pre class="r"><code>data &lt;- read.table(&quot;Peixoto_Additional_inputtext/Peixoto_FC_array_combined.txt&quot;, 
+<pre class="r"><code>data &lt;- read.table(&quot;Peixoto_Input_for_Additional_file_1/Peixoto_FC_array_combined.txt&quot;, 
     header = TRUE, as.is = TRUE, row.names = 74)
 data &lt;- data[, -1]
 
@@ -798,17 +798,17 @@ plotRLE(sAll$normalizedCounts, col = colLib, outline = FALSE, las = 3, ylim = c(
 ## [7] datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] BiocStyle_1.6.0         RColorBrewer_1.1-2     
-##  [3] ffpe_1.12.0             TTR_0.22-0             
-##  [5] xts_0.9-7               zoo_1.7-12             
-##  [7] RUVSeq_1.2.0            EDASeq_2.2.0           
-##  [9] ShortRead_1.26.0        GenomicAlignments_1.4.1
-## [11] Rsamtools_1.20.4        GenomicRanges_1.20.4   
-## [13] GenomeInfoDb_1.4.0      Biostrings_2.36.1      
-## [15] XVector_0.8.0           IRanges_2.2.2          
-## [17] S4Vectors_0.6.0         BiocParallel_1.2.2     
-## [19] Biobase_2.28.0          BiocGenerics_0.14.0    
-## [21] edgeR_3.10.2            limma_3.24.5           
+##  [1] RColorBrewer_1.1-2      ffpe_1.12.0            
+##  [3] TTR_0.22-0              xts_0.9-7              
+##  [5] zoo_1.7-12              RUVSeq_1.2.0           
+##  [7] EDASeq_2.2.0            ShortRead_1.26.0       
+##  [9] GenomicAlignments_1.4.1 Rsamtools_1.20.4       
+## [11] GenomicRanges_1.20.5    GenomeInfoDb_1.4.0     
+## [13] Biostrings_2.36.1       XVector_0.8.0          
+## [15] IRanges_2.2.4           S4Vectors_0.6.0        
+## [17] BiocParallel_1.2.2      Biobase_2.28.0         
+## [19] BiocGenerics_0.14.0     edgeR_3.10.2           
+## [21] limma_3.24.9            BiocStyle_1.6.0        
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] nlme_3.1-120           bitops_1.0-6          

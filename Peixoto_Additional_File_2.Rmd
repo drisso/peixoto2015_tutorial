@@ -32,7 +32,7 @@ A more careful analysis of each dataset, e.g. by selecting a problem-specific se
 ## dicer KO mRNA data, DESeq2 normalization
 
 ```{r Barco_mrna}
-data <- read.table("GEO_datasets/GSE60261.txt", header = TRUE, sep="\t")
+data <- read.table("Peixoto_Input_for_Additional_file_2/GSE60261.txt", header = TRUE, sep="\t")
 dicerKOmRNA <- as.matrix(data[,2:ncol(data)])
 x <- as.factor(rep(c("KO", "WT"), each = 3))
 colLib <- colors[x]
@@ -58,7 +58,7 @@ plotPCA(s$normalizedCounts, col=colLib)
 ## dicer KO small RNA data, DESeq2 normalization
 
 ```{r Barco_small}
-data <- read.table("GEO_datasets/GSE60262.txt", header = TRUE, sep="\t")
+data <- read.table("Peixoto_Input_for_Additional_file_2/GSE60262.txt", header = TRUE, sep="\t")
 dicerKOsmallRNA <- as.matrix(data[,2:ncol(data)])
 x <- as.factor(rep(c("KO", "WT"), each = 3))
 colLib <- colors[x]
@@ -85,7 +85,7 @@ plotPCA(s$normalizedCounts, col=colLib)
 ## H2A.Z shRNA knckdown FPKM, and FPKM+UQ
 
 ```{r h2az}
-data <- read.table("GEO_datasets/GSE58797.txt", header = TRUE, sep="\t")
+data <- read.table("Peixoto_Input_for_Additional_file_2/GSE58797.txt", header = TRUE, sep="\t")
 H2AZRNA <- as.matrix(data[,2:10])
 x <- as.factor(rep(c("Control", "shRNA", "FC"), each = 3))
 colLib <- colors[x]
@@ -116,7 +116,7 @@ plotPCA(s$normalizedCounts, col=colLib)
 ## aging 3M-24 M SE filter >10 reads, DESeq
 
 ```{r Fischer1}
-data <- read.table("GEO_datasets/GSE61915.txt", header = TRUE, sep="\t")
+data <- read.table("Peixoto_Input_for_Additional_file_2/GSE61915.txt", header = TRUE, sep="\t")
 agingRNASE <- as.matrix(data[,2:ncol(data)])
 x <- as.factor(c(rep("Young",5), rep("Old",6)))
 colLib <- colors[x]
@@ -142,7 +142,7 @@ plotPCA(s$normalizedCounts, col=colLib)
 ## Kat2a KO and NOR, UQ
 
 ```{r Fischer2}
-data <- read.table("GEO_datasets/GSE53380.txt", header = TRUE, sep="\t")
+data <- read.table("Peixoto_Input_for_Additional_file_2/GSE53380.txt", header = TRUE, sep="\t")
 KO_NORRNA <- as.matrix(data[,2:ncol(data)])
 x <- as.factor(c(rep("Control", 6), rep("NOR", 5), rep("KO",6), rep("KO_NOR",7)))
 colLib <- colors[x]
@@ -171,7 +171,7 @@ plotPCA(s$normalizedCounts, col=colLib)
 ## AD mouse model, 2 time points
 
 ```{r tsai}
-data <- read.table("GEO_datasets/GSE65159.txt", header = TRUE, sep="\t")
+data <- read.table("Peixoto_Input_for_Additional_file_2/GSE65159.txt", header = TRUE, sep="\t")
 AD_RNA <- as.matrix(data[,2:ncol(data)])
 x <- as.factor(rep(c("Control6wk","AD6wk", "Control2wk","AD2wk"), each = 3))
 colLib <- colors[x]
@@ -200,7 +200,7 @@ plotPCA(s$normalizedCounts, col=colLib)
 ## ribosome bound, FPKM PE and SE
 
 ```{r reijmers}
-data <- read.table("GEO_datasets/GSE58343.txt", header = TRUE, sep="\t")
+data <- read.table("Peixoto_Input_for_Additional_file_2/GSE58343.txt", header = TRUE, sep="\t")
 Ribosome_RNA <- as.matrix(data[,2:ncol(data)])
 x <- as.factor(c(rep("HC", 10), rep("FC", 12)))
 colLib <- colors[x]

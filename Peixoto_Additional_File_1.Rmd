@@ -3,7 +3,7 @@ title: "How data analysis affects power, reproducibility and biological insight 
 author: Lucia Peixoto, Davide Risso, Shane G. Poplawski, Mathieu,  E. Wimmer, Terence P. Speed, Marcelo A. Wood and Ted Abel
 font_size: 12pt
 output: 
-      BiocStyle::html_document:
+      BiocStyle::pdf_document:
         toc: true
 graphics: yes
 bibliography: biblio.bib
@@ -30,8 +30,7 @@ Reads were mapped to the mouse genome (mm9) using GMAP/GSNAP
 used for feature quantitation. Ensembl [@flicek2014ensembl]
 (release 65) gene counts were obtained using HTSeq [@anders2014htseq] (v.  0.6.1).
 
-**Peixoto_Additional_inputtext.zip** is a ZIP archive that contains all the files needed to run
-this tutorial. For the remainder of the document we assume that the reader has extracted the archive into the working directory.
+In this document, we assume that the input data are in the **Peixoto_Input_for_Additional_file_1**.
 
 **Peixoto_CC_FC_RT.txt** contains the FC read counts and **Peixoto_OLM_HC.txt** contains the OLM read counts used in the subsequent analyses.
 
@@ -64,9 +63,9 @@ library(RColorBrewer)
 After reading the FC counts and the positive and negative control genes in R, we filter out the non expressed genes.
 
 ```{r readFC}
-fc <- read.table("Peixoto_Additional_inputtext/Peixoto_CC_FC_RT.txt", row.names=1, header=TRUE)
-negControls <- read.table("Peixoto_Additional_inputtext/Peixoto_NegativeControls.txt", sep='\t', header=TRUE, as.is=TRUE)
-positive <- read.table("Peixoto_Additional_inputtext/Peixoto_positive_controls.txt", as.is=TRUE, sep='\t', header=TRUE)
+fc <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_CC_FC_RT.txt", row.names=1, header=TRUE)
+negControls <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_NegativeControls.txt", sep='\t', header=TRUE, as.is=TRUE)
+positive <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_positive_controls.txt", as.is=TRUE, sep='\t', header=TRUE)
 
 x <- as.factor(rep(c("CC", "FC", "RT"), each=5))
 names(x) <- colnames(fc)
@@ -243,7 +242,7 @@ points(topRsRT[negCon,1], -log10(topRsRT[negCon, "PValue"]), pch=1, col=colors[3
 We next look at the OLM experiment. After reading the OLM counts into R, we filter out the non expressed genes.
 
 ```{r olm}
-olm <- read.table("Peixoto_Additional_inputtext/Peixoto_OLM_HC.txt", row.names=1, header=TRUE)
+olm <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_OLM_HC.txt", row.names=1, header=TRUE)
 stopifnot(all(rownames(olm)==rownames(fc)))
 
 x <- as.factor(rep(c("HC", "OLM"), each=6))
@@ -490,7 +489,7 @@ Finally, we look at the concordance between DE lists obtained from RNA-seq (eith
 We consider a subset of genes, including only the genes mapped uniquely by the Affymetrix probe-sets and detected by RNA-seq, and only the samples assessed with both technologies.
 
 ```{r microarray}
-data <- read.table("Peixoto_Additional_inputtext/Peixoto_FC_array_combined.txt", header=TRUE, as.is=TRUE, row.names=74)
+data <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_FC_array_combined.txt", header=TRUE, as.is=TRUE, row.names=74)
 data <- data[,-1]
 
 platform <- rep("seq", ncol(data))

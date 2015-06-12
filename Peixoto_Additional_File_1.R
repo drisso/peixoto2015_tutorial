@@ -12,9 +12,9 @@ library(ffpe)
 library(RColorBrewer)
 
 ## ----readFC--------------------------------------------------------------
-fc <- read.table("Peixoto_Additional_inputtext/Peixoto_CC_FC_RT.txt", row.names=1, header=TRUE)
-negControls <- read.table("Peixoto_Additional_inputtext/Peixoto_NegativeControls.txt", sep='\t', header=TRUE, as.is=TRUE)
-positive <- read.table("Peixoto_Additional_inputtext/Peixoto_positive_controls.txt", as.is=TRUE, sep='\t', header=TRUE)
+fc <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_CC_FC_RT.txt", row.names=1, header=TRUE)
+negControls <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_NegativeControls.txt", sep='\t', header=TRUE, as.is=TRUE)
+positive <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_positive_controls.txt", as.is=TRUE, sep='\t', header=TRUE)
 
 x <- as.factor(rep(c("CC", "FC", "RT"), each=5))
 names(x) <- colnames(fc)
@@ -127,7 +127,7 @@ points(topRsRT[RTdown,1], -log10(topRsRT[RTdown, "PValue"]), pch=1, col=colors[1
 points(topRsRT[negCon,1], -log10(topRsRT[negCon, "PValue"]), pch=1, col=colors[3], cex=1, lwd=2)
 
 ## ----olm-----------------------------------------------------------------
-olm <- read.table("Peixoto_Additional_inputtext/Peixoto_OLM_HC.txt", row.names=1, header=TRUE)
+olm <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_OLM_HC.txt", row.names=1, header=TRUE)
 stopifnot(all(rownames(olm)==rownames(fc)))
 
 x <- as.factor(rep(c("HC", "OLM"), each=6))
@@ -309,7 +309,7 @@ points(topSCombined[negCon,1], -log10(topSCombined[negCon, "PValue"]), pch=1, co
 
 
 ## ----microarray----------------------------------------------------------
-data <- read.table("Peixoto_Additional_inputtext/Peixoto_FC_array_combined.txt", header=TRUE, as.is=TRUE, row.names=74)
+data <- read.table("Peixoto_Input_for_Additional_file_1/Peixoto_FC_array_combined.txt", header=TRUE, as.is=TRUE, row.names=74)
 data <- data[,-1]
 
 platform <- rep("seq", ncol(data))
@@ -395,6 +395,43 @@ rl <- ruvS_limma[1:500,]
 plot(ul[-(1:20),], ylim=c(0.15,0.55), col=colors[1], lwd=2, type="l", cex.axis=1, cex.lab=1)
 lines(rl[-(1:20),], col=colors[2], lwd=2)
 legend("topright", legend=c("UQ vs. limma", "RUVs vs limma"), col=colors, lwd=2, cex=1)
+
+## ----ruv-k1--------------------------------------------------------------
+filter <- apply(fc, 1, function(x) length(x[which(x>10)])>5)
+filtered <- as.matrix(fc)[filter,]
+negCon <- intersect(negControls[,2], rownames(filtered))
+
+x <- as.factor(rep(c("CC", "FC", "RT"), each=5))
+names(x) <- colnames(fc)
+colLib <- colors[x]
+
+uq <- betweenLaneNormalization(filtered, which="upper")
+
+groups <- matrix(data=c(1:5, 6:10, 11:15), nrow=3, byrow=TRUE)
+
+s1 <- RUVs(uq, negCon, k=1, groups)
+
+plotRLE(s1$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+plotPCA(s1$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
+
+## ----ruv-k5--------------------------------------------------------------
+plotRLE(s$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+
+plotPCA(s$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
+
+## ----ruv-k10-------------------------------------------------------------
+s10 <- RUVs(uq, negCon, k=10, groups)
+
+plotRLE(s10$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+
+plotPCA(s10$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
+
+## ----ruvs-all------------------------------------------------------------
+sAll <- RUVs(uq, rownames(uq), k=5, groups)
+
+plotRLE(sAll$normalizedCounts, col=colLib, outline=FALSE, las=3, ylim=c(-.2, .2), ylab="Relative Log Expression", cex.axis=1, cex.lab=1)
+
+plotPCA(sAll$normalizedCounts, col=colLib, cex=1, cex.axis=1, cex.lab=1, xlim=c(-.6, .9), ylim=c(-.7, .6))
 
 ## ----sessionInfo---------------------------------------------------------
 sessionInfo()
