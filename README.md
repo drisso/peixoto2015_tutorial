@@ -2,7 +2,7 @@
 
 ### Analysis of FC and OLM datasets
 
-All the needed input files are in the "Peixoto_Additional_inputtext" directory.
+All the needed input files are in the [Peixoto_Input_for_Additional_file_1](Peixoto_Input_for_Additional_file_1) directory.
 
 This tutorial has been tested with R 3.2.0.
 
@@ -14,7 +14,7 @@ This tutorial has been tested with R 3.2.0.
 
 ### Analysis of publicly available data
 
-The processed expression data from GEO are available in the [GEO_datasets](GEO_datasets) directory.
+The processed expression data from GEO are available in the [Peixoto_Input_for_Additional_file_2](Peixoto_Input_for_Additional_file_1) directory.
 
 [Peixoto_Additional_File_2.Rmd](Peixoto_Additional_File_2.Rmd) contains the Rmarkdown and can be run to reproduce the analysis.
 
