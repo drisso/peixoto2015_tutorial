@@ -1,4 +1,4 @@
-## Tutorial to reproduce the analysis of Peixoto et al. (2015)
+## Tutorial to reproduce the analysis of [Peixoto et al. (2015)](https://nar.oxfordjournals.org/content/43/16/7664.full)
 
 ### Analysis of FC and OLM datasets
 
